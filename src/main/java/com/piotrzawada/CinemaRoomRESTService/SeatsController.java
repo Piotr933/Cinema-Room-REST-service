@@ -65,7 +65,28 @@ public class SeatsController {
         } else {
             return new ResponseEntity<>(Map.of("error", "Wrong token!"), HttpStatus.BAD_REQUEST);
         }
+    }
 
+    @PostMapping("/stats")
+    public ResponseEntity<?> stats(@RequestParam(required = false) String password) {
+        String pass = "super_secret";
+        LinkedHashMap<String, Integer> stats = new LinkedHashMap<>();
+        stats.put("current_income", currentIncome());
+        stats.put("number_of_available_seats", rows * columns - bookings.size());
+        stats.put("number_of_purchased_tickets", bookings.size());
+        if (pass.equals(password)) {
+            return  new ResponseEntity<>(stats,HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(Map.of("error", "The password is wrong!"), HttpStatus.UNAUTHORIZED);
+        }
+    }
+
+    private int currentIncome() {
+        int income = 0;
+        for (Seat seat: bookings.values()) {
+        income += seat.getPrice();
+        }
+        return income;
     }
 }
 
