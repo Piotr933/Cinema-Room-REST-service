@@ -1,7 +1,5 @@
 package com.piotrzawada.CinemaRoomRESTService;
 
-
-
 public class Token {
     String token;
 
